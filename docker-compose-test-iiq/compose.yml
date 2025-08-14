@@ -1,0 +1,37 @@
+# We are using .env file from the base dicrectory to store all the value for enviroment variable, which is ignore by GitHub by .ignore file
+version: "3"
+services:
+  db:
+    image: mysql:8.0.31
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+    networks:
+      - iiq-network
+    volumes:
+      - db-data:/var/lib/mysql
+  iiq:
+    build: ../iiq-image
+    depends_on:
+      - db
+    image: iiq-image
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_HOST: "${MYSQL_HOST}"
+    ports:
+      - "9000:8443"
+    networks:
+      - iiq-network
+    volumes:
+      - iiq-data:/opt/tomcat/webapps/identityiq
+volumes:
+  db-data:
+  iiq-data:
+networks:
+  iiq-network:

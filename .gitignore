@@ -1,0 +1,28 @@
+#project-level gitignore
+#https://git-scm.com/docs/gitignore
+
+#ignore env file used here to store all the values for environement variable used in compose.yml file
+
+#ignore war or zip file
+#*.war
+#*.zip
+
+#ignore patch log files and other log stuff
+patch_*.log
+*.log
+
+#exclude pem (rsa key files)
+*.pem
+*.pem.pub
+
+#exclude ansible aspects
+*.retry
+
+config/.DS_Store
+web/WEB-INF/.DS_Store
+web/WEB-INF/lib/.DS_Store
+
+# exclude editor temp files
+*.swp
+
+.DS_Store

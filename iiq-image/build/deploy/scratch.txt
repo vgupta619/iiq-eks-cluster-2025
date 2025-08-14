@@ -1,0 +1,33 @@
+#####To create new database scripts:
+$ cd identityiq_home\WEB-INF\bin
+$ iiqschema
+
+#####Create the IdentityIQ Database and Table
+Inside = identityiq_home\WEB-INF\database
+$ mysql -u user -pPassword:password
+$ mysql> source create_identityiq_tables.mysql;
+— Confirmation output from the SQL commands contained in the script is displayed onthe screen
+$ —mysql> show databases; (optional - verification that the database was created)
+$ mysql> quit
+
+#####Configure the IdentityIQ Installation
+inside = identityiq_home\WEB-INF\classes
+
+1. Access the iiq.properties file and update the following information for the application and plugin data-bases:
+l Host Name
+l Database Type
+l Database Namel User ID
+l Password
+
+2. Run the
+$ iiq encrypt <password> command from the identityiq_home\WEB-INF\bin directory to create an encrypted password.
+The password for the database connection can be clear text or encrypted. It is highly recommended that you use an encrypted password.
+
+3. Import the initial configuration objects into the IdentityIQ database.
+4. Launch the IdentityIQ console by running the
+$ iiq console command from the identityiq_home\WEB-INF\bin directory.
+Use the console command import init.xml to import the configuration objects as shown:
+$ iiq console
+    >import init.xml
+    > quit
+5. Start your application server.
