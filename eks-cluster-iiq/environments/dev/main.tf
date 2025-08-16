@@ -63,3 +63,16 @@ module "cloudwatch_monitoring" {
   cluster_name               = aws_eks_cluster.this.name
   cloudwatch_agent_role_arn  = aws_iam_role.cloudwatch_agent.arn
 }
+
+module "argocd" {
+  source                     = "../../modules/argocd"
+  k8s_host                   = data.aws_eks_cluster.cluster.endpoint
+  k8s_cluster_ca_certificate = data.aws_eks_cluster.cluster.certificate_authority[0].data
+  k8s_token                  = data.aws_eks_cluster_auth.cluster.token
+  admin_password             = "admin123"
+  application_name           = "my-app"
+  application_repo           = "https://github.com/my-org/my-app.git"
+  application_branch         = "main"
+  application_path           = "deploy/manifests"
+  application_target_namespace = "default"
+}
