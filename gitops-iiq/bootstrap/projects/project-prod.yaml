@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: prod
+  namespace: argocd
+spec:
+  destinations:
+    - namespace: "*"
+      server: https://<prod-cluster-api>
+  sourceRepos:
+    - https://github.com/your-org/k8s-iiq.git

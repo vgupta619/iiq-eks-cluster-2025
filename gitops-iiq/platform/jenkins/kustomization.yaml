@@ -1,0 +1,11 @@
+resources:
+  - certificate.yaml
+  - ingress.yaml
+
+helmCharts:
+  - name: jenkins
+    repo: https://charts.jenkins.io
+    version: 4.1.3
+    releaseName: jenkins
+    namespace: jenkins
+    valuesFile: values.yaml

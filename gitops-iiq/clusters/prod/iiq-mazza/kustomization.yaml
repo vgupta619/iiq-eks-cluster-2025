@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Use local manifests from gitops-iiq/clusters/dev/iiq-mazza
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+# Add dev-specific config
+configMapGenerator:
+  - name: iiq-mazza-config
+    literals:
+      - ENV=dev
+      - LOG_LEVEL=debug
+
+# Set namespace for dev
+namespace: iiq-mazza-prod

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iiq-mazza-dev
+  namespace: argocd
+spec:
+  project: dev
+  source:
+    repoURL: https://github.com/your-org/gitops-iiq.git
+    targetRevision: main
+    path: clusters/dev/iiq-mazza
+  destination:
+    name: dev-eks
+    namespace: iiq-mazza
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

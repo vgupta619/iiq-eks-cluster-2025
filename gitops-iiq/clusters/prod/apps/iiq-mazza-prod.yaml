@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iiq-mazza-prod
+  namespace: argocd
+spec:
+  project: prod
+  source:
+    repoURL: https://github.com/your-org/k8s-iiq.git
+    targetRevision: main
+    path: iiq-mazza/prod
+  destination:
+    name: prod-eks
+    namespace: iiq-mazza
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

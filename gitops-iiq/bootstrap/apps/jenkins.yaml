@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins
+  namespace: argocd
+spec:
+  project: platform
+  source:
+    repoURL: https://charts.jenkins.io
+    chart: jenkins
+    targetRevision: 4.7.2
+    helm:
+      releaseName: jenkins
+      valueFiles:
+        - $values/platform/jenkins/values.yaml
+      valuesObject:
+        controller:
+          installPlugins:
+            - kubernetes:4211.vbeca_2235dec5
+            - workflow-aggregator:590.v6a_d052e5a_a_b_5
+          resources:
+            requests: { cpu: "200m", memory: "512Mi" }
+          serviceType: ClusterIP
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jenkins
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [CreateNamespace=true]

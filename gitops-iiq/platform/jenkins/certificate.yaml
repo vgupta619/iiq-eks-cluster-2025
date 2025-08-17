@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: jenkins-tls
+  namespace: jenkins
+spec:
+  secretName: jenkins-tls-secret
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: jenkins.example.com # Replace with your actual domain
+  dnsNames:
+    - jenkins.example.com
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
