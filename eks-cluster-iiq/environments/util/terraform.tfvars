@@ -1,7 +1,7 @@
 # Variables defaults for eks prod environements
 cluster_type    = "eks"
 cluster_name    = "cold-drinks"
-environment     = "dev"
+environment     = "util"
 application     = "soda"
 region          = "ap-south-1"
 aws_account     = ""
@@ -11,10 +11,10 @@ additional_tags = {}
 # VPC
 ###############################################################################
 
-cidr_range         = "10.1.0.0/16"
+cidr_range         = "10.0.0.0/16"
 vpc_name           = ""
-private_cidr_range = ["10.1.101.0/24", "10.1.102.0/24"]
-public_cidr_range  = ["10.1.1.0/24", "10.1.2.0/24"]
+private_cidr_range = ["10.0.101.0/24", "10.0.102.0/24"]
+public_cidr_range  = ["10.0.1.0/24", "10.0.2.0/24"]
 azs                = ["ap-south-1a", "ap-south-1b"]
 
 ###############################################################################
@@ -36,11 +36,3 @@ application_repo             = "https://github.com/vgupta619/iiq-eks-cluster.git
 application_branch           = "main"
 application_path             = "gitops-iiq/bootstrap/apps"
 application_target_namespace = "argocd"
-
-###############################################################################
-# Aurora Serverless
-###############################################################################
-
-engine_version  = "8.0.mysql_aurora.3.05.2"
-master_username = "admin"
-master_password = "secret123admin"

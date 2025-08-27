@@ -51,18 +51,6 @@ module "eks" {
 
 }
 
-# Aurora for non-prod (serverless v2)
-module "aurora_nonprod" {
-  source                    = "../../modules/serverless-aurora"
-  vpc_id                    = module.vpc.vpc_id
-  aurora_cluster_identifier = "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}-serverless"
-  engine_version            = var.engine_version
-  master_username           = var.master_username
-  master_password           = var.master_password
-  private_subnet_ids        = module.vpc.private_subnets
-  eks_nodes_sg_id           = module.eks.nodes_security_group_id
-}
-
 module "karpenter" {
   source            = "../../modules/karpenter-autoscaler"
   cluster_name      = module.eks.cluster_name
@@ -86,3 +74,15 @@ module "cloudwatch_monitoring" {
   cloudwatch_agent_role_arn  = aws_iam_role.cloudwatch_agent.arn
 }
 
+module "argocd" {
+  source                       = "../../modules/argocd"
+  k8s_host                     = data.aws_eks_cluster.cluster.endpoint
+  k8s_cluster_ca_certificate   = data.aws_eks_cluster.cluster.certificate_authority[0].data
+  k8s_token                    = data.aws_eks_cluster_auth.cluster.token
+  admin_password               = var.admin_password
+  application_name             = var.application_name
+  application_repo             = var.application_repo
+  application_branch           = var.application_branch
+  application_path             = var.application_path
+  application_target_namespace = var.application_target_namespace
+}

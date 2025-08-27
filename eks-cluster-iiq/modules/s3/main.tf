@@ -74,7 +74,7 @@ resource "aws_s3_bucket_policy" "state_force_ssl" {
 
 resource "aws_s3_bucket" "eks_s3_bucket" {
   bucket_prefix = var.override_s3_bucket_name ? null : var.state_bucket_prefix
-  bucket        = var.override_s3_bucket_name ? "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}-tfstate-bucket" : null
+  bucket        = var.override_s3_bucket_name ? "${var.cluster_type}-${var.cluster_name}-${var.application}-tfstate-bucket" : null
   force_destroy = var.s3_bucket_force_destroy
 
   tags = local.merged_tags
