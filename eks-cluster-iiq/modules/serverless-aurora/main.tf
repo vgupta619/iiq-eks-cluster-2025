@@ -66,7 +66,7 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory" {
   namespace           = "AWS/RDS"
   period              = 300
   statistic           = "Average"
-  threshold           = 200_000_000 # 200 MB
+  threshold           = "200_000_000" # 200 MB
 
   dimensions = {
     DBClusterIdentifier = aws_rds_cluster.aurora.id
