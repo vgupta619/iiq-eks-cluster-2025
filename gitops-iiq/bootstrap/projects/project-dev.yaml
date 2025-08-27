@@ -8,4 +8,4 @@ spec:
     - namespace: "*"
       server: https://<dev-cluster-api>
   sourceRepos:
-    - https://github.com/your-org/k8s-iiq.git
+    - https://github.com/vgupta619/iiq-eks-cluster-2025.git

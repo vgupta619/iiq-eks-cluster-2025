@@ -100,3 +100,67 @@ variable "bootstrap_desired_size" {
   type        = number
   default     = 1
 }
+
+#---------------------------------------------------------------------------------------------------
+# ArgoCD
+#---------------------------------------------------------------------------------------------------
+
+variable "admin_password" {
+  type        = string
+  description = "Initial ArgoCD admin password"
+  sensitive   = true
+}
+
+variable "application_name" {
+  type        = string
+  default     = "my-app"
+  description = "Name of the pre-configured ArgoCD application"
+}
+
+variable "application_project" {
+  type        = string
+  default     = "default"
+  description = "ArgoCD project for the application"
+}
+
+variable "application_repo" {
+  type        = string
+  default     = ""
+  description = "Git repository URL for the application"
+}
+
+variable "application_branch" {
+  type        = string
+  default     = "main"
+  description = "Git branch to track for the application"
+}
+
+variable "application_path" {
+  type        = string
+  default     = "."
+  description = "Path in the Git repo for the application manifests"
+}
+
+variable "application_target_namespace" {
+  type        = string
+  default     = "default"
+  description = "Target namespace in EKS where the application will be deployed"
+}
+
+#---------------------------------------------------------------------------------------------------
+# Aurora Serverless
+#---------------------------------------------------------------------------------------------------
+
+variable "engine_version" {
+  description = "aurora engine version"
+}
+
+variable "master_username" {
+  description = "Aurora admin user name"
+  type        = string
+}
+
+variable "master_password" {
+  description = "Aurora admin password"
+  type        = string
+}

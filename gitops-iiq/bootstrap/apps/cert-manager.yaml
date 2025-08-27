@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/gitops-iiq.git
+    repoURL: https://github.com/vgupta619/iiq-eks-cluster-2025.git
     targetRevision: main
     path: platform/cert-manager
   destination:

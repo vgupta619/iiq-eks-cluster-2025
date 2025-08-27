@@ -20,14 +20,13 @@ resource "aws_db_subnet_group" "aurora" {
 }
 
 resource "aws_rds_cluster" "aurora" {
-  cluster_identifier      = "aurora-nonprod-serverless"
-  engine                  = "aurora-mysql"
-  engine_mode             = "provisioned"
-  engine_version          = "8.0.mysql_aurora.3.05.2"
-  master_username         = "admin"
-  master_password         = "SuperSecret123"
-  vpc_security_group_ids  = [aws_security_group.aurora.id]
-  db_subnet_group_name    = aws_db_subnet_group.aurora.name
+  cluster_identifier     = var.aurora_cluster_identifier
+  engine                 = "aurora-mysql"
+  engine_version         = var.engine_version
+  master_username        = var.master_username
+  master_password        = var.master_password
+  vpc_security_group_ids = [aws_security_group.aurora.id]
+  db_subnet_group_name   = aws_db_subnet_group.aurora.name
 
   serverlessv2_scaling_configuration {
     min_capacity = 0.5

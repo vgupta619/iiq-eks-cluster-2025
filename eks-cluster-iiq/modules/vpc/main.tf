@@ -9,7 +9,7 @@ resource "aws_vpc" "this" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
-  tags = merge(var.tags, { Name = "${var.name}-vpc" })
+  tags                 = merge(var.tags, { Name = "${var.name}-vpc" })
 }
 
 resource "aws_internet_gateway" "this" {
@@ -24,7 +24,7 @@ resource "aws_subnet" "public" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
   tags = merge(var.tags, {
-    Name = "${var.name}-public-${count.index + 1}"
+    Name                     = "${var.name}-public-${count.index + 1}"
     "kubernetes.io/role/elb" = "1"
   })
 }
@@ -35,13 +35,13 @@ resource "aws_subnet" "private" {
   cidr_block        = var.private_subnets[count.index]
   availability_zone = element(var.azs, count.index)
   tags = merge(var.tags, {
-    Name = "${var.name}-private-${count.index + 1}"
+    Name                              = "${var.name}-private-${count.index + 1}"
     "kubernetes.io/role/internal-elb" = "1"
   })
 }
 
 resource "aws_eip" "nat" {
- tags = merge(var.tags, { Name = "${var.name}-aws-eip" })
+  tags = merge(var.tags, { Name = "${var.name}-aws-eip" })
 }
 
 resource "aws_nat_gateway" "this" {
@@ -58,7 +58,7 @@ resource "aws_route_table" "public" {
 resource "aws_route" "public_internet_access" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id              = aws_internet_gateway.this.id
+  gateway_id             = aws_internet_gateway.this.id
 }
 
 resource "aws_route_table_association" "public" {

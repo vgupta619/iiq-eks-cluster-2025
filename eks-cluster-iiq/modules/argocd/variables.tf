@@ -14,8 +14,8 @@ variable "k8s_token" {
 }
 
 variable "namespace" {
-  type        = string
-  default     = "argocd"
+  type    = string
+  default = "argocd"
 }
 
 variable "chart_version" {

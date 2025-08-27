@@ -20,13 +20,14 @@ resource "aws_db_subnet_group" "aurora" {
 }
 
 resource "aws_rds_cluster" "aurora" {
-  cluster_identifier      = "aurora-prod-cluster"
-  engine                  = "aurora-mysql"
-  engine_version          = "8.0.mysql_aurora.3.05.2"
-  master_username         = "admin"
-  master_password         = "SuperSecret123"
-  vpc_security_group_ids  = [aws_security_group.aurora.id]
-  db_subnet_group_name    = aws_db_subnet_group.aurora.name
+  cluster_identifier     = var.aurora_cluster_identifier
+  engine                 = "aurora-mysql"
+  engine_mode            = "provisioned"
+  engine_version         = var.engine_version
+  master_username        = var.master_username
+  master_password        = var.master_password
+  vpc_security_group_ids = [aws_security_group.aurora.id]
+  db_subnet_group_name   = aws_db_subnet_group.aurora.name
 }
 
 # -----------------------
@@ -60,7 +61,7 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory" {
   namespace           = "AWS/RDS"
   period              = 300
   statistic           = "Average"
-  threshold           = 200   # 200 MB
+  threshold           = 200 # 200 MB
 
   dimensions = {
     DBClusterIdentifier = aws_rds_cluster.aurora.id

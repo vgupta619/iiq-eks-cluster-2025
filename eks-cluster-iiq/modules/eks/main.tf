@@ -9,10 +9,10 @@
 */
 
 locals {
-  tags = merge(var.tags, { 
-    "eks:cluster" = var.cluster_name 
+  tags = merge(var.tags, {
+    "eks:cluster"                               = var.cluster_name
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
-    })
+  })
 }
 
 # ---------------------------
@@ -103,12 +103,12 @@ resource "aws_security_group_rule" "cp_to_nodes" {
 
 # Nodes -> control-plane (HTTPS)
 resource "aws_security_group_rule" "nodes_to_cp" {
-  type                           = "egress"
-  security_group_id              = aws_security_group.nodes.id
-  from_port                      = 443
-  to_port                        = 443
-  protocol                       = "tcp"
-  source_security_group_id       = aws_eks_cluster.this.vpc_config[0].cluster_security_group_id 
+  type                     = "egress"
+  security_group_id        = aws_security_group.nodes.id
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_eks_cluster.this.vpc_config[0].cluster_security_group_id
 }
 
 # ---------------------------
@@ -212,8 +212,8 @@ resource "aws_eks_addon" "kube_proxy" {
 }
 
 resource "aws_eks_addon" "coredns" {
-  cluster_name               = aws_eks_cluster.this.name
-  addon_name                 = "coredns"
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "coredns"
   resolve_conflicts_on_update = "PRESERVE"
 }
 
@@ -223,9 +223,9 @@ resource "aws_iam_role" "ebs_csi" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow",
+      Effect    = "Allow",
       Principal = { Federated = aws_iam_openid_connect_provider.oidc.arn },
-      Action = "sts:AssumeRoleWithWebIdentity",
+      Action    = "sts:AssumeRoleWithWebIdentity",
       Condition = {
         StringEquals = {
           (replace(aws_iam_openid_connect_provider.oidc.url, "https://", "") + ":sub") : "system:serviceaccount:kube-system:aws-ebs-csi-controller"
