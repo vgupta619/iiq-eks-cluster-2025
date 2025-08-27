@@ -1,36 +1,54 @@
-provider "aws" {
-  region = var.aws_region
+locals {
+  # Naming conventions and default configurations
+
+  resource_prefix  = "${lower(var.environment)}-${lower(var.cluster_type)}-${lower(var.application)}"
+  vpc_name_default = "${lower(var.environment)}-${lower(var.cluster_type)}-${lower(var.cluster_name)}-${lower(var.application)}-vpc"
+  vpc_name         = var.vpc_name != "" ? lower(var.vpc_name) : local.vpc_name_default
+
+  # Tagging
+
+  tags = {
+    Cluster_type   = lower(var.cluster_type)
+    Cluster_name   = lower(var.cluster_name)
+    Environment    = lower(var.environment)
+    Application    = lower(var.application)
+    TerraformBuild = "true"
+  }
+  merged_tags = merge(local.tags, var.additional_tags)
+
+  merged_tags_length = length(keys(local.merged_tags))
+
+}
+
+data "aws_caller_identity" "current" {
+}
+
+data "aws_region" "current" {
 }
 
 module "vpc" {
   source          = "../../modules/vpc"
-  name            = "dev"
-  vpc_cidr        = "10.0.0.0/16"
-  public_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnets = ["10.0.101.0/24", "10.0.102.0/24"]
-  azs             = ["us-east-1a", "us-east-1b"]
-  tags = {
-    Environment = "dev"
-    Project     = "eks-project"
-  }
+  name            = var.vpc_name
+  vpc_cidr        = var.cidr_range
+  public_subnets  = var.public_cidr_range
+  private_subnets = var.private_cidr_range
+  azs             = var.azs
+  tags            = local.merged_tags
 }
 
 module "eks" {
   source = "../../modules/eks"
 
-  cluster_name           = "dev-eks"
-  eks_version            = "1.30"
+  cluster_name           = "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}"
+  eks_version            = var.eks_version
   vpc_id                 = module.vpc.vpc_id
   private_subnet_ids     = module.vpc.private_subnets
 
   enable_bootstrap_node_group = true
-  bootstrap_instance_types    = ["t3.small"]
-  bootstrap_desired_size      = 1
+  bootstrap_instance_types    = var.bootstrap_instance_types
+  bootstrap_desired_size      = var.bootstrap_desired_size
+  tags = local.tags
 
-  tags = {
-    Environment = "dev"
-    Project     = "myproject"
-  }
 }
 
 # Aurora for non-prod (serverless v2)

@@ -177,7 +177,7 @@ resource "aws_eks_node_group" "bootstrap" {
   subnet_ids      = var.private_subnet_ids
   ami_type        = "AL2_x86_64"
   instance_types  = var.bootstrap_instance_types
-  capacity_type   = "ON_DEMAND"
+  capacity_type   = var.capacity_type
 
   scaling_config {
     desired_size = var.bootstrap_desired_size

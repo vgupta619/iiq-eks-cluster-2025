@@ -59,3 +59,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "capacity_type" {
+  description = "Instance capacity type used to create node group"
+  type        = string
+  default     = ""
+}
