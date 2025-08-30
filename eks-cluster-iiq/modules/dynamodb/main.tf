@@ -11,7 +11,6 @@ locals {
   tags = {
     Cluster_type   = lower(var.cluster_type)
     Cluster_name   = lower(var.cluster_name)
-    Environment    = lower(var.environment)
     Application    = lower(var.application)
     TerraformBuild = "true"
   }
@@ -22,7 +21,7 @@ locals {
 }
 
 resource "aws_dynamodb_table" "eks_dynamodb_table" {
-  name         = "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}-${var.dynamodb_table_name}"
+  name         = "${var.cluster_type}-${var.cluster_name}-${var.application}-${var.dynamodb_table_name}"
   billing_mode = var.dynamodb_table_billing_mode
   hash_key     = local.lock_key_id
 

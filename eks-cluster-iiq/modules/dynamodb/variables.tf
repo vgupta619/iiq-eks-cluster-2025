@@ -2,11 +2,6 @@
 # General
 #---------------------------------------------------------------------------------------------------
 
-variable "environment" {
-  description = "Name of the environment, e.g: prod, pre, test, dev"
-  type        = string
-}
-
 variable "application" {
   description = "Name of the application for the deployment"
   default     = ""

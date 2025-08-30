@@ -7,6 +7,6 @@ terraform {
     region  = "ap-south-1"
     encrypt = true
     #kms_key_id = "9658c776-b966-43d4-b84e-ec99ec50f151"
-    dynamodb_table = "dev-eks-cold-drinks-soda-remote-state-lock"
+    dynamodb_table = "eks-cold-drinks-soda-remote-state-lock"
   }
 }

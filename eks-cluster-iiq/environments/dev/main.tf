@@ -72,17 +72,17 @@ module "karpenter" {
 
 module "metrics_server" {
   source                     = "../../modules/metrics-server"
-  k8s_host                   = data.aws_eks_cluster.cluster.endpoint
-  k8s_cluster_ca_certificate = data.aws_eks_cluster.cluster.certificate_authority[0].data
-  k8s_token                  = data.aws_eks_cluster_auth.cluster.token
+  k8s_host                   = module.eks.cluster_endpoint
+  k8s_cluster_ca_certificate = module.eks.cluster_certificate_authority_data[0].data
+  k8s_token                  = module.eks.cluster_token
 }
 
 module "cloudwatch_monitoring" {
   source                     = "../../modules/cloudwatch-monitoring"
-  k8s_host                   = data.aws_eks_cluster.cluster.endpoint
-  k8s_cluster_ca_certificate = data.aws_eks_cluster.cluster.certificate_authority[0].data
-  k8s_token                  = data.aws_eks_cluster_auth.cluster.token
-  cluster_name               = aws_eks_cluster.this.name
-  cloudwatch_agent_role_arn  = aws_iam_role.cloudwatch_agent.arn
+  k8s_host                   = module.eks.cluster_endpoint
+  k8s_cluster_ca_certificate = module.eks.cluster_certificate_authority_data[0].data
+  k8s_token                  = module.eks.cluster_token
+  cluster_name               = module.eks.cluster_name
+  cloudwatch_agent_role_arn  = #aws_iam_role.cloudwatch_agent.arn
 }
 

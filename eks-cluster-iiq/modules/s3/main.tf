@@ -6,7 +6,6 @@ locals {
   tags = {
     Cluster_type   = lower(var.cluster_type)
     Cluster_name   = lower(var.cluster_name)
-    Environment    = lower(var.environment)
     Application    = lower(var.application)
     TerraformBuild = "true"
   }
@@ -32,7 +31,7 @@ resource "aws_kms_key" "eks_kms_key" {
 }
 
 resource "aws_kms_alias" "eks_kms_key" {
-  name          = "alias/${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}-${var.kms_key_alias}"
+  name          = "alias/${var.cluster_type}-${var.cluster_name}-${var.application}-${var.kms_key_alias}"
   target_key_id = aws_kms_key.eks_kms_key.key_id
 }
 
@@ -129,6 +128,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "eks_s3_bucket_lifecycle_config
     id     = "auto-archive"
     status = "Enabled"
 
+    filter {
+      
+    }
     dynamic "noncurrent_version_transition" {
       for_each = var.noncurrent_version_transitions
 
