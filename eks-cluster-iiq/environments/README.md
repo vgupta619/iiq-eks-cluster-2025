@@ -9,7 +9,7 @@ Create:
 
 ## dev
 This is test environment to deploy IIQ in eks cluster.
-Create
+Create:
 1. Dev VPC.
 2. dev EKS cluster.
 3. serverless aurora for non-prod.
@@ -19,7 +19,7 @@ Create
 
 ## prod
 This is production environment to deploy IIQ in eks cluster.
-Create
+Create:
 1. Prod VPC.
 2. Prod EKS cluster.
 3. provisioned aurora for prod.
@@ -28,7 +28,7 @@ Create
 6. enable cloudwatch monitoring. 
 
 ## util
-This is utility environment which deploy all platform util tools. This should be deploy at last
+This is utility environment which deploy all platform util tools. This should be deploy at last.
 Create:
 1. Util VPC
 2. Util EKS cluster
