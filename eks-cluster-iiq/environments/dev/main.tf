@@ -28,7 +28,7 @@ data "aws_region" "current" {
 
 module "vpc" {
   source          = "../../modules/vpc"
-  name            = var.vpc_name
+  name            = "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}"
   vpc_cidr        = var.cidr_range
   public_subnets  = var.public_cidr_range
   private_subnets = var.private_cidr_range
@@ -43,7 +43,7 @@ module "eks" {
   eks_version        = var.eks_version
   vpc_id             = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnets
-
+  capacity_type      = var.capacity_type
   enable_bootstrap_node_group = true
   bootstrap_instance_types    = var.bootstrap_instance_types
   bootstrap_desired_size      = var.bootstrap_desired_size

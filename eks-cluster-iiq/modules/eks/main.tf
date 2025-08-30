@@ -228,7 +228,7 @@ resource "aws_iam_role" "ebs_csi" {
       Action    = "sts:AssumeRoleWithWebIdentity",
       Condition = {
         StringEquals = {
-          (replace(aws_iam_openid_connect_provider.oidc.url, "https://", "") + ":sub") : "system:serviceaccount:kube-system:aws-ebs-csi-controller"
+          "${replace(aws_iam_openid_connect_provider.oidc.url, "https://", "")}:sub" = "system:serviceaccount:kube-system:aws-ebs-csi-controller"
         }
       }
     }]

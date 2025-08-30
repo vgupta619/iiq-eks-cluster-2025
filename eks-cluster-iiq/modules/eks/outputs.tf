@@ -11,7 +11,7 @@ output "cluster_certificate_authority_data" {
 }
 
 output "cluster_token" {
-  value = aws_eks_cluster.aws_eks_cluster_auth.token
+  value = data.aws_eks_cluster_auth.this.token
 }
 
 output "oidc_provider_arn" {
@@ -24,14 +24,6 @@ output "nodes_security_group_id" {
 
 output "bootstrap_node_role_arn" {
   value = var.enable_bootstrap_node_group ? aws_iam_role.bootstrap_node_role[0].arn : ""
-}
-
-output "karpenter_node_role_arn" {
-  value = aws_iam_role.karpenter_node_role.arn
-}
-
-output "karpenter_node_instance_profile" {
-  value = aws_iam_instance_profile.karpenter_node_profile.name
 }
 
 output "ebs_csi_role_arn" {
