@@ -1,5 +1,5 @@
 resource "aws_security_group" "aurora" {
-  name        = "aurora-nonprod-sg"
+  name        = var.aurora_sg
   description = "Aurora SG (non-prod)"
   vpc_id      = var.vpc_id
 }
@@ -15,7 +15,7 @@ resource "aws_security_group_rule" "allow_from_nodes" {
 }
 
 resource "aws_db_subnet_group" "aurora" {
-  name       = "aurora-nonprod-subnets"
+  name       = var.aurora_db_sg
   subnet_ids = var.private_subnet_ids
 }
 
@@ -30,7 +30,7 @@ resource "aws_rds_cluster" "aurora" {
 
   serverlessv2_scaling_configuration {
     min_capacity = 0.5
-    max_capacity = 4
+    max_capacity = 4 # can scale up to 4 ACUs means 8GB RAM
   }
 }
 
@@ -40,7 +40,7 @@ resource "aws_rds_cluster" "aurora" {
 
 # CPU Utilization
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
-  alarm_name          = "aurora-serverless-cpu-high"
+  alarm_name          = "${var.aurora_cluster_identifier}-cpu-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 2
   metric_name         = "CPUUtilization"
@@ -58,14 +58,14 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
 
 # Freeable Memory
 resource "aws_cloudwatch_metric_alarm" "freeable_memory" {
-  alarm_name          = "aurora-serverless-low-memory"
+  alarm_name          = "${var.aurora_cluster_identifier}-low-memory"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 2
   metric_name         = "FreeableMemory"
   namespace           = "AWS/RDS"
   period              = 300
   statistic           = "Average"
-  threshold           = "200_000_000" # 200 MB
+  threshold           = 200000000 # 200 MB
 
   dimensions = {
     DBClusterIdentifier = aws_rds_cluster.aurora.id
@@ -76,7 +76,7 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory" {
 
 # Database Connections
 resource "aws_cloudwatch_metric_alarm" "db_connections" {
-  alarm_name          = "aurora-serverless-high-connections"
+  alarm_name          = "${var.aurora_cluster_identifier}-high-connections"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 2
   metric_name         = "DatabaseConnections"
@@ -94,7 +94,7 @@ resource "aws_cloudwatch_metric_alarm" "db_connections" {
 
 # Aurora Serverless v2 Capacity Utilization Alarm
 resource "aws_cloudwatch_metric_alarm" "serverless_capacity" {
-  alarm_name          = "aurora-serverless-capacity-high"
+  alarm_name          = "${var.aurora_cluster_identifier}-capacity-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "ServerlessDatabaseCapacity"

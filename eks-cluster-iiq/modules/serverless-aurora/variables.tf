@@ -36,3 +36,12 @@ variable "master_password" {
   description = "Aurora admin password"
   type        = string
 }
+
+variable "aurora_sg" {
+  description = "Aurora security group"
+  type        = string
+}
+variable "aurora_db_sg" {
+  description = "Aurora DB subnet group"
+  type        = string
+}

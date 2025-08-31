@@ -40,7 +40,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
 
 resource "aws_iam_role_policy_attachment" "eks_vpc_controller" {
   role       = aws_iam_role.eks_cluster.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_VPCResourceController"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
 }
 
 # ---------------------------
@@ -193,7 +193,12 @@ resource "aws_eks_node_group" "bootstrap" {
     }
   }
 
-  tags = local.tags
+  tags = merge(
+    local.tags,
+    {
+      "Name" = "${var.cluster_name}-node"
+    }
+  )
 
   depends_on = [aws_iam_role_policy_attachment.bootstrap_eks_worker]
 }

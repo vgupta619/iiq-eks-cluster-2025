@@ -55,7 +55,9 @@ module "eks" {
 module "aurora_nonprod" {
   source                    = "../../modules/serverless-aurora"
   vpc_id                    = module.vpc.vpc_id
-  aurora_cluster_identifier = "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}-serverless"
+  aurora_cluster_identifier = "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}-aurora-serverless"
+  aurora_sg                 = "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}-aurora-sg"
+  aurora_db_sg              = "${var.environment}-${var.cluster_type}-${var.cluster_name}-${var.application}-aurora-db-subnetgroup"
   engine_version            = var.engine_version
   master_username           = var.master_username
   master_password           = var.master_password
