@@ -27,7 +27,9 @@ resource "aws_rds_cluster" "aurora" {
   master_password        = var.master_password
   vpc_security_group_ids = [aws_security_group.aurora.id]
   db_subnet_group_name   = aws_db_subnet_group.aurora.name
+  skip_final_snapshot    = true     # destroy aurora without taking final snap
 
+  # Required for aurora serverless v2
   serverlessv2_scaling_configuration {
     min_capacity = 0.5
     max_capacity = 4 # can scale up to 4 ACUs means 8GB RAM
